@@ -4,6 +4,7 @@ const { createJWTToken } = require('../helper/jwt');
 module.exports = {
     Login: (req,res) => {
         let { username, password } = req.body;
+        // let sql = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
         let sql = `SELECT * FROM users WHERE password = '${password}'`;
         db.query(sql, (err,results) => {
             if (err) {

@@ -56,41 +56,53 @@ module.exports = {
         }
     },
     editProduct: (req,res) => {
+        // let { id } = req.params;
+        // let sql = `select * from products where product_id = ${id}`;
+        // db.query(sql, (err,results) => {
+        //     if (err) {
+        //         res.status(500).send(err.message);
+        //     }
+        //     let oldImagePath = results[0].imagePath;
+        //     try {
+        //         const path = '/images';
+        //         const upload = uploader(path, 'PQR').fields([{ name: 'image' }]);
+        //         upload(req,res,(err) => {
+        //             if (err) {
+        //                 res.status(500).send(err.message);
+        //             }
+        //             const { image } = req.files;
+        //             const { nama, harga } = req.body;
+        //             const imagePath = image ? `${path}/${image[0].filename}` : oldImagePath;
+        //             let sql = `update products set nama = '${nama}', harga = ${harga}, imagePath = '${imagePath}' where product_id = ${id}`;
+        //             db.query(sql, (err,results) => {
+        //                 if (err) {
+        //                     fs.unlinkSync(`./public${imagePath}`);
+        //                     res.status(500).send(err.message);
+        //                 }
+        //                 if (image) {
+        //                     fs.unlinkSync(`./public${oldImagePath}`);
+        //                 }
+        //                 res.status(200).send({
+        //                     status: 'Success',
+        //                     message: 'Data edited successfully',
+        //                 });
+        //             });
+        //         });
+        //     } catch (err) {
+        //         res.status(500).send(err.message);
+        //     }
+        // });
         let { id } = req.params;
-        let sql = `select * from products where product_id = ${id}`;
+        let { nama, harga, merk } = req.body;
+        let sql = `update products set nama = '${nama}', merk = '${merk}', harga = ${harga} where product_id = ${id}`;
         db.query(sql, (err,results) => {
             if (err) {
                 res.status(500).send(err.message);
             }
-            let oldImagePath = results[0].imagePath;
-            try {
-                const path = '/images';
-                const upload = uploader(path, 'PQR').fields([{ name: 'image' }]);
-                upload(req,res,(err) => {
-                    if (err) {
-                        res.status(500).send(err.message);
-                    }
-                    const { image } = req.files;
-                    const { nama, harga } = req.body;
-                    const imagePath = image ? `${path}/${image[0].filename}` : oldImagePath;
-                    let sql = `update products set nama = '${nama}', harga = ${harga}, imagePath = ${imagePath} where product_id = ${id}`;
-                    db.query(sql, (err,results) => {
-                        if (err) {
-                            fs.unlinkSync(`./public${imagePath}`);
-                            res.status(500).send(err.message);
-                        }
-                        if (image) {
-                            fs.unlinkSync(`./public${oldImagePath}`);
-                        }
-                        res.status(200).send({
-                            status: 'Success',
-                            message: 'Data edited successfully',
-                        });
-                    });
-                });
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
+            res.status(200).send({
+                status : 'edited',
+                message : 'Data Edited!',
+            });
         });
     },
     deleteProduct: (req,res) => {
